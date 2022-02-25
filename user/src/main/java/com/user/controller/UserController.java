@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,53 +18,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.user.model.User;
-import com.user.repo.userRepo;
-import com.user.service.userService;
 
+import com.user.service.UserService;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
-	userService user_Service;
-	
+	@Autowired
+	@Qualifier("userServiceimpl")
+	UserService userService;
+
 	@GetMapping
-	public List<User> getAllUsers()
-	{
-		List<User> users=user_Service.getAllUsers();
-		return users;
-	}
-	
-	@GetMapping("/{id}")
-	public User getUserById(@PathVariable("id") String id)
-	{
-			
-		return user_Service.getUserById(id);
+	public ResponseEntity<?> getAllUsers() {
+		List<User> users=userService.getAllUsers();
+		System.out.println("users:"+users);
+		return new ResponseEntity<List<User>>(users,HttpStatus.OK);
 		
 	}
-	
+
+	@GetMapping("/getById/{id}")
+	public User getUserById(@PathVariable("id") String id) {
+		System.out.println("users:"+id);
+		return userService.getUserById(id);
+
+	}
+
 	@PostMapping
-	public User saveUser(@RequestBody User user)
-	{
-		 return user_Service.saveUser(user);
+	public User saveUser(@RequestBody User user) {
+		return userService.saveUser(user);
 	}
-	
-	
+
 	@PutMapping
-	public User updateUser(@RequestBody User user)
-	{
-		return user_Service.updateUser(user);
+	public User updateUser(@RequestBody User user) {
+		return userService.updateUser(user);
 	}
-	
-	
-	@DeleteMapping("/{id}")
-	public void deleteUser(@PathVariable("id") String id)
-	{
-		user_Service.deleteUser(id);
+
+	@DeleteMapping
+	public void deleteUser(@RequestBody String id) {
+		userService.deleteUser(id);
 	}
-	
-	
-	
-	
-	
+
 }

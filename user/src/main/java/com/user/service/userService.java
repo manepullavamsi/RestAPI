@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.user.model.User;
-@Service
-public interface userService {
+
+public interface UserService {
 	
 	List<User> getAllUsers();
 	

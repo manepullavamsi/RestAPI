@@ -13,8 +13,8 @@ import javax.persistence.Table;
 public class User {
 	@Id
 	@Column(name = "user_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
+
 
 	@Column(name = "userName")
 	private String userName;
