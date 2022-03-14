@@ -6,3 +6,4 @@ USER RESTAPI DEMO
 3.One to many relationship<br/>
 4.JPQL and JPA out of box quries<br/>
 5.Implemented Redis Cache<br/>
+6.Exception Handling
