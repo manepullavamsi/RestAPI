@@ -2,6 +2,7 @@ package com.user.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
@@ -28,7 +29,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/user")
 @Api(value = "This Rest Api is used for curd operations")
-@EnableCaching
+//@EnableCaching
 public class UserController {
 
 	UserService userService;
@@ -55,9 +56,9 @@ public class UserController {
 			@ApiResponse(code = 400, message = "This code is represnt user Details don't have because provided username is not exist in System") })
 
 	@GetMapping("/getByusername/{username}")
-	public ResponseEntity<User> getByUsername(@PathVariable("username") @Email String username) {
+	public ResponseEntity<User> getByUsername(@PathVariable("username") @Email String username,HttpServletRequest http) {
 
-		return ResponseEntity.ok(userService.getByUsername(username));
+		return ResponseEntity.ok(userService.getByUsername(username,username.substring(0, 3),http,"Testing"));
 
 	}
 

@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import com.user.repo.userRepo;
 import com.user.utlity.ServiceUtlity;
 
 @Service("userServiceimpl")
+@CacheConfig(cacheNames = { "getUserCache" })
 public class UserServiceimpl implements UserService {
 
 	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(UserServiceimpl.class);
@@ -45,10 +49,11 @@ public class UserServiceimpl implements UserService {
 	}
 
 	@Override
-	@Cacheable(value = "User", key = "#username")
-	public User getByUsername(String username) {
+//	@Cacheable(value = "User", key = "#username")
+	@Cacheable(keyGenerator = "userKeyGenrator")
+	public User getByUsername(String username, String name, HttpServletRequest http,String lastname) {
 		LOGGER.info("from Datbase we are getting Data:" + username);
-		LOGGER.error(userRepo.findByUserName(username).toString());
+//		LOGGER.error(userRepo.findByUserName(username).toString());
 		return userRepo.findByUserName(username)
 				.orElseThrow(() -> new UserDoesntExists("107", "Please check username UserDoesn't exist"));
 
@@ -82,7 +87,7 @@ public class UserServiceimpl implements UserService {
 	}
 
 	@Override
-	@CacheEvict(value = "User", key = "#username")
+//	@CacheEvict(value = "User", key = "#username")
 	public Long deleteByUserName(String username) {
 
 		if (userRepo.existsByUserName(username))
