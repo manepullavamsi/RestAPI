@@ -96,5 +96,10 @@ public class UserServiceimpl implements UserService {
 			throw new UserDoesntExists("107", "Please check username UserDoesn't exist");
 
 	}
+	
+	
+	public void hello() {
+		System.out.println("Hello");
+	}
 
 }
